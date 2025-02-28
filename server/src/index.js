@@ -10,15 +10,18 @@ app.use(cors());
 
 //all currencies
 app.get("/getAllCurrencies", async (req, res) => {
-    const nameURL = "https://openexchangerates.org/api/currencies.json?app_id=5f4f8d172c1e430c855e142156d001b2";
+    const nameURL = "https://openexchangerates.org/api/currencies.json?app_id=0b4c0dbe8b3b4e8696ca2c9112a2100f";
 
 
 
-    return res.json(nameData);
+
 
     try {
         const nameResponce = await axios.get(nameURL);
         const nameData = nameResponce.data;
+
+        return res.json(nameData);
+
     } catch (err) {
         console.error(err);
     }

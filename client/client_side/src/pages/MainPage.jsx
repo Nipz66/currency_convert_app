@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from "axios";
 
 function MainPage() {
 
@@ -8,22 +9,23 @@ function MainPage() {
     const [targetCurrency, setTargetCurrency] = useState("");
     const [amountInSourceCurrency, setAmountInSourceCurrency] = useState(0);
     const [amountInTargetCurrency, setAmountInTargetCurrency] = useState(0);
-    const [currencyNames, getCurrencyNames] = useState([]);
+    const [currencyNames, setCurrencyNames] = useState([]);
 
     //handle Submit method
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         console.log(date, sourceCurrency, targetCurrency, amountInSourceCurrency);
+
     };
 
     useEffect(() => {
         const getCurrencyNames = async () => {
             try {
-                const response = await axios.get(
+                const responce = await axios.get(
                     "http://localhost:5000/getAllCurrencies"
                 );
-
+                setCurrencyNames(responce.data);
             } catch (err) {
                 console.error(err);
             }
@@ -45,16 +47,19 @@ function MainPage() {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-5">
                             <label htmlFor={date} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                            <input type="date" id={date} name={date} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
+                            <input type="date" id={date} name={date} onChange={(e) => setDate(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
                         </div>
                         <div className='mt-5 items-center justify-center flex-col'>
                             <div className="max-w-sm ">
                                 <label htmlFor={sourceCurrency} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Source Currency</label>
                                 <select id={sourceCurrency} name={sourceCurrency} value={sourceCurrency} onChange={(e) => setSourceCurrency(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option>United States</option>
-                                    <option>Canada</option>
-                                    <option>France</option>
-                                    <option>Germany</option>
+                                    <option value="">Select Source Currency</option>
+                                    {Object.keys(currencyNames).map((currency) => (
+                                        <option className='p-1' key={currency} value={currency}>
+                                            {currencyNames[currency]}
+                                        </option>
+                                    ))}
+
                                 </select>
                             </div>
                             <div className='mt-5'>
@@ -62,10 +67,12 @@ function MainPage() {
                                     <label htmlFor={targetCurrency} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Target Currency</label>
                                     <select onChange={(e) => setTargetCurrency(e.target.value)} id={targetCurrency} name={targetCurrency} value={targetCurrency} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        <option>United States</option>
-                                        <option>Canada</option>
-                                        <option>France</option>
-                                        <option>Germany</option>
+                                        <option value=""> Select Source Currency</option>
+                                        {Object.keys(currencyNames).map((currency) => (
+                                            <option className='p-1' key={currency} value={currency}>
+                                                {currencyNames[currency]}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
