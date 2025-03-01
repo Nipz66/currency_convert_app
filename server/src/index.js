@@ -27,6 +27,9 @@ app.get("/getAllCurrencies", async (req, res) => {
     }
 });
 
+//get target currency
+
+
 //listen to a port
 app.listen(5000, () => {
     console.log("SERVER STARTED");

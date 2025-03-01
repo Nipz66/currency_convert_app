@@ -13,9 +13,21 @@ function MainPage() {
 
     //handle Submit method
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(date, sourceCurrency, targetCurrency, amountInSourceCurrency);
+        try {
+
+            const responce = await axios.get(
+                "http://localhost:5000/convertCurrency", {
+                params: { date, amountInSourceCurrency, targetCurrency, amountInTargetCurrency, },
+            }
+            );
+
+            //Todo:set the rest...
+            
+        } catch (error) {
+            console.error(err);
+        }
 
     };
 
