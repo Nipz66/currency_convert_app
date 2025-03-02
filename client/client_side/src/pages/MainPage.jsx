@@ -19,12 +19,18 @@ function MainPage() {
 
             const responce = await axios.get(
                 "http://localhost:5000/convertCurrency", {
-                params: { date, amountInSourceCurrency, targetCurrency, amountInTargetCurrency, },
+                params: {
+                    date,
+                    amountInSourceCurrency,
+                    targetCurrency,
+                    amountInTargetCurrency,
+
+                },
             }
             );
 
             //Todo:set the rest...
-            
+
         } catch (error) {
             console.error(err);
         }
