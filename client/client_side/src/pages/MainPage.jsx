@@ -21,15 +21,15 @@ function MainPage() {
                 "http://localhost:5000/convertCurrency", {
                 params: {
                     date,
+                    sourceCurrency,
                     amountInSourceCurrency,
                     targetCurrency,
-                    amountInTargetCurrency,
 
                 },
             }
             );
 
-            //Todo:set the rest...
+            setAmountInSourceCurrency(responce.data);
 
         } catch (error) {
             console.error(err);
@@ -107,7 +107,7 @@ function MainPage() {
                     </form>
                 </section>
             </div>
-
+            {amountInTargetCurrency}
         </div>
     )
 }
