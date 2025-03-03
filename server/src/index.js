@@ -10,7 +10,7 @@ app.use(cors());
 
 //all currencies
 app.get("/getAllCurrencies", async (req, res) => {
-    const nameURL = "https://openexchangerates.org/api/currencies.json?app_id=0b4c0dbe8b3b4e8696ca2c9112a2100f";
+    const nameURL = `https://openexchangerates.org/api/currencies.json?app_id=0b4c0dbe8b3b4e8696ca2c9112a2100f`;
 
     try {
         const nameResponce = await axios.get(nameURL);
@@ -24,26 +24,26 @@ app.get("/getAllCurrencies", async (req, res) => {
 });
 
 //get target currency
-app.get("/convertCurrency", async (req, res) => {
+app.get("/convert", async (req, res) => {
     const { date,
         amountInSourceCurrency,
         targetCurrency,
-        amountInTargetCurrency, } = req.query;
+        sourceCurrency,
+    } = req.query;
+
+    const dataUrl = `https://openexchangerates.org/api/historical/${date}.json?app_id=0b4c0dbe8b3b4e8696ca2c9112a2100f`;
     try {
-
-        const dataUrl = 'https://openexchangerates.org/api/historical/${date}.json?app_id=0b4c0dbe8b3b4e8696ca2c9112a2100f';
-
         const dataResponse = await axios.get(dataUrl);
         const rates = dataResponse.data.rates;
 
         //rates
-        const targetRates = rates(targetCurrency);
-        const sourceRates = rates(sourceCurrency);
+        const targetRates = rates[targetCurrency];
+        const sourceRates = rates[sourceCurrency];
 
         //final target amount
         const targetAmount = (targetRates / sourceRates) * amountInSourceCurrency;
 
-        return res.json(targetAmount);
+        return res.json(targetAmount.toFixed(2));
 
     } catch (err) {
         console.error(err);

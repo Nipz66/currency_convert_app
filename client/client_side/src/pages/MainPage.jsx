@@ -10,26 +10,27 @@ function MainPage() {
     const [amountInSourceCurrency, setAmountInSourceCurrency] = useState(0);
     const [amountInTargetCurrency, setAmountInTargetCurrency] = useState(0);
     const [currencyNames, setCurrencyNames] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     //handle Submit method
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-
             const responce = await axios.get(
-                "http://localhost:5000/convertCurrency", {
+                "http://localhost:5000/convert", {
                 params: {
                     date,
                     sourceCurrency,
-                    amountInSourceCurrency,
                     targetCurrency,
-
+                    amountInSourceCurrency,
                 },
             }
             );
 
-            setAmountInSourceCurrency(responce.data);
+            setAmountInTargetCurrency(responce.data);
+            setLoading(false);
+            console.log(amountInSourceCurrency, amountInTargetCurrency);
 
         } catch (error) {
             console.error(err);
@@ -107,7 +108,17 @@ function MainPage() {
                     </form>
                 </section>
             </div>
-            {amountInTargetCurrency}
+
+            {!loading ? (
+                <section className='mt-5'>
+                    {amountInSourceCurrency} {currencyNames[sourceCurrency]} is equals to {" "}
+                    <span className='text-blue-500 font-bold'>{amountInTargetCurrency} </span> in {currencyNames[targetCurrency]}
+                </section>
+            ) : (
+                null
+            )
+            }
+
         </div>
     )
 }
